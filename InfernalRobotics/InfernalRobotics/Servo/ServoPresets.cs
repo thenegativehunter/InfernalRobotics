@@ -88,12 +88,12 @@ namespace InfernalRobotics_v3.Servo
 			if(Servo.PresetPositions == null || Servo.PresetPositions.Count == 0)
 				return;
 
-			ceiling = Servo.PresetPositions.FindIndex(p => p > Servo.Position + 0.005f);
+			ceiling = Servo.PresetPositions.FindIndex(p => p > Servo.Position + 0.015f);
 
 			if(ceiling == -1)
 				ceiling = Servo.PresetPositions.Count - 1;
 
-			floor = Servo.PresetPositions.FindLastIndex(p => p < Servo.Position - 0.005f);
+			floor = Servo.PresetPositions.FindLastIndex(p => p < Servo.Position - 0.015f);
 
 			if(floor == -1)
 				floor = 0;
