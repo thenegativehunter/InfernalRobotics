@@ -454,7 +454,15 @@ commandedPosition = -force; // FEHLER, stimmt das so??
 
 commandedPosition = force; // FEHLER, stimmt das so??
 			}
-			position = 0.0f;
+
+            // may need to use to180 instead
+            if (IsRotational)
+            {
+                correction_0 = to360(correction_0);
+                correction_1 = to360(correction_1);
+            }
+
+            position = 0.0f;
 
 			// reset workaround
 			if(fixedMeshTransform)
@@ -1333,11 +1341,15 @@ else
 		{
 			get
 			{
-				if(!isInverted)
-					return (swap ? -position : position) + zeroNormal + correction_1 - correction_0;
-				else
-					return (swap ? position : -position) + zeroInvert - correction_1 + correction_0;
-			}
+                float pos = ip.IsAtTarget && !HighLogic.LoadedSceneIsEditor ? ip.TargetPosition : position;
+                float ret;
+                if (!isInverted)
+                    ret = (swap ? -pos : pos) + zeroNormal + correction_1 - correction_0;
+                else
+                    ret = (swap ? pos : -pos) + zeroInvert - correction_1 + correction_0;
+                // may need to use to180(ret) instead. i donno. to360 worked for me
+                return IsRotational ? to360(ret) : ret;
+            }
 		}
 
 		public float Speed

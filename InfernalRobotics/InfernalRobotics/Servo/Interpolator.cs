@@ -17,13 +17,46 @@ namespace InfernalRobotics_v3.Servo
 
 
 		private enum TypeOfMovement { Stopped = 0, Accel = 4, Decel = 8, UpAccel = 5, Up = 1, UpDecel = 9, DownAccel = 6, Down = 2, DownDecel = 10 };
-		private TypeOfMovement MovingType;
+        private TypeOfMovement _movementType;
+        private TypeOfMovement MovingType
+        {
+            get
+            {
+                return _movementType;
+            }
+            set
+            {
+                _movementType = value;
+                if (Math.Abs(GetPosition() - targetPosition) < 0.02f && value == TypeOfMovement.Stopped)
+                {
+                    IsAtTarget = true;
+                }
+                else
+                {
+                    IsAtTarget = false;
+                }
+            }
+        }
 
-		private float position;
+        // to check if the servo has reached to it's target. it make shake, or have small errors. 
+        // they shouldn't interfere with this check up.
+        public bool IsAtTarget
+        {
+            private set;
+            get;
+        }
+
+        private float position;
 		private float speed;
 		private float direction;
 
 		private float targetPosition;
+
+        public float TargetPosition
+        {
+            get { return targetPosition; }
+        }
+
 		private float targetSpeed;
 		private float targetDirection;
 
